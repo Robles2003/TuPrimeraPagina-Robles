@@ -55,7 +55,7 @@ ROOT_URLCONF = 'TuPrimeraPagina_Robles.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],  # Ruta a la carpeta de plantillas
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
