@@ -1,18 +1,54 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.http import HttpResponse
-from .forms import AutorForm, LectorForm, ArticuloForm
+from .forms import AutorForm, LectorForm, ArticuloForm, LoginForm
 from .models import Autor, Lector, Articulo
 
 # Create your views here.
 def main(request):
-    request.session['idAutor'] = 5
-    return render(request, 'vista/main.html') # Renderiza la plantilla index.html en la carpeta principal
-                                            #toma automaticamente el archivo de la carpeta templates
+    if request.session['logeado'] == None or request.session['logeado'] == False:
+        request.session['logeado'] = False
+        return redirect('login')
+    else:
+        return render(request, 'vista/main.html', {'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
 
 def prueba(request):
-    return HttpResponse("<h1>Hola, esta es una prueba</h1>") # Respuesta simple de prueba
+    request.session['logeado'] = False
+    return redirect('inicio')
 
 def login(request):
+    if request.method == 'POST' and request.session.get('logeado') == False:
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            password = form.cleaned_data['password']
+            tipo = form.cleaned_data['tipo']
+                
+            if tipo == 'autor':
+                try: 
+                    autor = Autor.objects.get(nombre=nombre, password=password)
+                    request.session.get('idAutor', autor.id)
+                    request.session['logeado'] = True
+                    request.session['tipo'] = 'autor'
+                    request.session['nombre'] = autor.nombre 
+                    return redirect('inicio')
+                except Autor.DoesNotExist:
+                    return render(request, 'vista/login.html', {'form': form, 'error': 'Autor no encontrado'})
+            elif tipo == 'lector':
+                try:
+                    lector = Lector.objects.get(nombre=nombre, password=password)
+                    request.session['idLector'] = lector.id
+                    request.session['logeado'] = True
+                    request.session['tipo'] = 'lector'
+                    request.session['nombre'] = lector.nombre  
+                    return redirect('inicio')
+                except Lector.DoesNotExist:
+                    return render(request, 'vista/login.html', {'form': form, 'error': 'Lector no encontrado'})
+    else:
+        form = LoginForm()
+        return render(request, 'vista/login.html', {'form': form})
+        
+    
     return render(request, 'vista/login.html')
 
 def crear_autor(request):
@@ -53,7 +89,7 @@ def crear_lector(request):
 
 def crear_publicacion(request):
     
-    if request.session.get('idAutor') != None:
+    if request.session.get('logeado') != False and request.session.get('tipo') == 'autor':
         if request.method == 'POST':
             form = ArticuloForm(request.POST)
             if form.is_valid(): 
@@ -73,4 +109,5 @@ def crear_publicacion(request):
             return render(request, 'vista/crear_Publicacion.html', {'form': form})
 
     else:
-        return HttpResponse("Debes de iniciar session")##luego hacer que redirija a la vista de inicio de sesión
+        messages.error(request, 'debes estar logueado como autor para crear una publicación')
+        return redirect('login')  # Redirige al login si no está logueado o no es autor

@@ -2,35 +2,35 @@
 
 {% block title %} Login {% endblock %}
 
-{% block content %} 
 
-    <div class="login-container">
-        <h2 class="text-center mb-4">Iniciar Sesión</h2>
-        <form method="POST">
-            {% csrf_token %}
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre de usuario</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" name="password" id="password" required>
-            </div>
-            <div class="mb-3">
-                <label for="tipo" class="form-label">Tipo de usuario</label>
-                <select name="tipo" id="tipo" class="form-select" required>
-                    <option value="">Seleccionar...</option>
-                    <option value="autor">Autor</option>
-                    <option value="lector">Lector</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-        </form>
-        {% if error %}
-            <div class="alert alert-danger mt-3 text-center">
-                {{ error }}
-            </div>
-        {% endif %}
-    </div>
+{% block content %}
+<div class="login-container" style="max-width: 400px; margin: auto;">
+    <h2 class="text-center mb-4">Iniciar Sesión</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
 
-{% endblock  %}
+    <div class="text-center mt-3">
+        <a href="{% url 'crear_autor' %}">Registrar Autor</a>
+    
+    <div class="text-center mt-3">
+        <a href="{% url 'crear_lector' %}">Registrar Lector</a>
+
+
+    {% if error %}
+        <div class="alert alert-danger mt-3 text-center">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <script>
+            alert("{{ message }}");
+            </script>
+        {% endfor %}
+    {% endif %}
+</div>
+{% endblock %}

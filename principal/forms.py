@@ -20,3 +20,12 @@ class ArticuloForm(forms.Form):
     contenido = forms.CharField(widget=forms.Textarea)
     fecha_publicacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     ##autor = forms.ModelChoiceField(queryset=Autor.objects.all())  # Asegúrate de importar el modelo Autor
+    
+    
+class LoginForm(forms.Form):
+    nombre = forms.CharField(max_length=100, label='Nombre de usuario')
+    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
+    tipo = forms.ChoiceField(
+        choices=[('autor', 'Autor'), ('lector', 'Lector')],
+        label='Tipo de usuario'
+    )
