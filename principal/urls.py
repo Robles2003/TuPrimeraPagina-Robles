@@ -1,6 +1,6 @@
 
 from django.urls import path
-from .views import main, prueba, crear_autor, crear_lector, crear_publicacion, login, Articulos
+from .views import main, prueba, crear_autor, crear_lector, crear_publicacion, login, Articulos, buscar_articulos
 
 urlpatterns = [
     path('', main, name='inicio'),# Ruta para la vista principal
@@ -10,5 +10,6 @@ urlpatterns = [
     path('crear_autor/', crear_autor, name='crear_autor'),
     path('login/', login, name='login'),
     path('articulos/', Articulos, name='articulos'),
+    path('buscar/', buscar_articulos, name='buscar_articulos'),
     
 ]

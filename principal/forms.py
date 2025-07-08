@@ -30,5 +30,12 @@ class LoginForm(forms.Form):
         label='Tipo de usuario'
     )
     
-
+class BuscarForm(forms.Form):
+    busqueda = forms.CharField(max_length=100, label='Buscar Artículo')
+    
+    def clean_busqueda(self):
+        data = self.cleaned_data['busqueda']
+        if not data:
+            raise forms.ValidationError("Este campo es obligatorio.")
+        return data
     

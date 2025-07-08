@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.http import HttpResponse
-from .forms import AutorForm, LectorForm, ArticuloForm, LoginForm
+from .forms import AutorForm, LectorForm, ArticuloForm, LoginForm, BuscarForm
 from .models import Autor, Lector, Articulo
 
 # Create your views here.
@@ -125,3 +125,15 @@ def Articulos(request):
     else:
         articulos = Articulo.objects.all()
         return render(request, 'vista/articulos.html', {'articulos': articulos, 'Lector': True, 'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
+
+def buscar_articulos(request):
+    if request.method == 'POST':
+        form = BuscarForm(request.POST)
+        if form.is_valid():
+            busqueda = form.cleaned_data['busqueda']
+            articulos = Articulo.objects.filter(titulo__icontains=busqueda)
+            return render(request, 'vista/articulos.html', {'articulos': articulos, 'Lector': True, 'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
+    else:
+        form = BuscarForm()
+    
+    return render(request, 'vista/buscar.html', {'form': form})
