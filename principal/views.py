@@ -17,7 +17,8 @@ def prueba(request):
     return redirect('inicio')
 
 def login(request):
-    if request.method == 'POST' and request.session.get('logeado') == False:
+    #and request.session.get('logeado') == False
+    if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             nombre = form.cleaned_data['nombre']
@@ -27,7 +28,7 @@ def login(request):
             if tipo == 'autor':
                 try: 
                     autor = Autor.objects.get(nombre=nombre, password=password)
-                    request.session.get('idAutor', autor.id)
+                    request.session['idAutor'] = autor.id
                     request.session['logeado'] = True
                     request.session['tipo'] = 'autor'
                     request.session['nombre'] = autor.nombre 
@@ -111,3 +112,13 @@ def crear_publicacion(request):
     else:
         messages.error(request, 'debes estar logueado como autor para crear una publicación')
         return redirect('login')  # Redirige al login si no está logueado o no es autor
+
+
+def Articulos(request):
+    
+    if request.session.get('tipo') == 'autor':  
+        articulos = Articulo.objects.filter(autor__id=request.session.get('idAutor'))
+        return render(request, 'vista/articulos.html', {'articulos': articulos, 'Autor': True, 'id': request.session.get('idAutor'), 'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
+    else:
+        articulos = Articulo.objects.all()
+        return render(request, 'vista/articulos.html', {'articulos': articulos, 'Lector': True, 'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})

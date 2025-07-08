@@ -30,4 +30,4 @@ class Articulo(models.Model):
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"Titulo: {self.titulo}, Contenido: {self.contenido}, Fecha de Publicacion: {self.fecha_publicacion}, Autor: {self.autor.nombre}"
+        return f"Titulo: {self.titulo}, Contenido: {self.contenido}, Fecha de Publicacion: {self.fecha_publicacion}, Autor: {self.autor.nombre} id: {self.autor.id}"
