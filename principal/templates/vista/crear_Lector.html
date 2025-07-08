@@ -1,0 +1,14 @@
+{% extends "plantilla.html" %}
+
+{% block title %}Autor{% endblock title %}
+
+{% block content %} 
+
+<h2>Crear Lector</h2>
+    <form method = "POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit" class="btn btn-primary">Crear Lector</button>
+    </form>
+
+{% endblock content %}

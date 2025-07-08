@@ -1,0 +1,14 @@
+{% extends "plantilla.html" %}
+
+{% block title %}Autor{% endblock title %}
+
+{% block content %} 
+
+<h2>Crear Autor</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+
+{% endblock content %}
