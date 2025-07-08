@@ -10,7 +10,10 @@ def main(request):
         request.session['logeado'] = False
         return redirect('login')
     else:
-        return render(request, 'vista/main.html', {'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
+        if request.session.get('tipo') == 'autor':
+            return render(request, 'vista/main.html', {'Autor': True, 'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
+        elif request.session.get('tipo') == 'lector':
+            return render(request, 'vista/main.html', {'Lector': True, 'nombre': request.session.get('nombre'), 'tipo': request.session.get('tipo')})
 
 def prueba(request):
     request.session['logeado'] = False

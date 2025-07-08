@@ -29,3 +29,6 @@ class LoginForm(forms.Form):
         choices=[('autor', 'Autor'), ('lector', 'Lector')],
         label='Tipo de usuario'
     )
+    
+
+    

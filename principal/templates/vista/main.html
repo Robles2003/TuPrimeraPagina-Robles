@@ -2,12 +2,50 @@
 
 {% block title %} Princpial de TuPrimeraPAgina {% endblock %}
 
+
+
 {% block content %} <h2> Bienvenido {{nombre}} y estas en modo {{tipo}} </h2>
 
 <form action="{% url 'prueba' %}" method="get">
     <button type="submit">salir</button>
 </form>
 
+
+{% if Autor %}
+<div style="display: flex; gap: 20px; justify-content: center; padding: 20px;">
+    
+    <!-- Card 1 -->
+    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 300px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <h3>Crear Publicacion</h3>
+        <p>Crear un articulo para poder conpatirlo con los lectores</p>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'crear_publicacion' %}" style="background-color: green; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Crear</a>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 300px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <h3>Ver tus articulos</h3>
+        <p>Lista los articulos que escribiste </p>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'articulos' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Listar</a>
+        </div>
+    </div>
+
+</div>
+{%endif %}
+
+{% if Lector %}
+<div style="display: flex; gap: 20px; justify-content: center; padding: 20px;">
+    <div style="border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 300px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <h3>Leer Articulos</h3>
+        <p>Lee los articulos creados por todos los usuarios Autores</p>
+        <div style="display: flex; gap: 10px;">
+            <a href="{% url 'articulos' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Leer</a>
+        </div>
+    </div>
+</div>
+{%endif%}
 
 
 {% endblock  %}
