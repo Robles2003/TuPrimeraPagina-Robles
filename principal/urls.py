@@ -1,15 +1,23 @@
+# urls.py
 
 from django.urls import path
-from .views import main, prueba, crear_autor, crear_lector, crear_publicacion, login, Articulos, buscar_articulos
+from .views import (
+    MainView,
+    LogoutView,
+    CrearAutorView,
+    CrearLectorView,
+    CrearPublicacionView,
+    LoginView,
+    ArticulosListView
+)
 
 urlpatterns = [
-    path('', main, name='inicio'),# Ruta para la vista principal
-    path('prueba/', prueba, name='prueba'),
-    path('crear_lector/', crear_lector, name='crear_lector'),
-    path('crear_publicacion/', crear_publicacion, name='crear_publicacion'),
-    path('crear_autor/', crear_autor, name='crear_autor'),
-    path('login/', login, name='login'),
-    path('articulos/', Articulos, name='articulos'),
-    path('buscar/', buscar_articulos, name='buscar_articulos'),
-    
+    path('', MainView.as_view(), name='inicio'),
+    path('logout/', LogoutView.as_view(), name='logout'), # La vista 'prueba' ahora es 'logout'
+    path('crear_lector/', CrearLectorView.as_view(), name='crear_lector'),
+    path('crear_publicacion/', CrearPublicacionView.as_view(), name='crear_publicacion'),
+    path('crear_autor/', CrearAutorView.as_view(), name='crear_autor'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('articulos/', ArticulosListView.as_view(), name='articulos'),
+    # La URL 'buscar_articulos' ya no es necesaria, su lógica está en ArticulosListView
 ]
