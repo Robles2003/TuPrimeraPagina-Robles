@@ -1,0 +1,14 @@
+{% extends "plantilla.html" %}
+
+{% block title %}Eliminar Artículo{% endblock %}
+
+{% block content %}
+<h2>¿Estás seguro de que querés eliminar este artículo?</h2>
+<p><strong>{{ object.titulo }}</strong></p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+    <a href="{% url 'articulo-list' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

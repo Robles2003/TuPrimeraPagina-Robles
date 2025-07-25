@@ -9,6 +9,14 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Guardar</button>
+
+        {% if form.nombre.errors %}
+            <ul class="errorlist">
+                {% for error in form.nombre.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </form>
 
 {% endblock content %}

@@ -2,6 +2,11 @@
 
 from django import forms
 from .models import Autor, Lector, Articulo
+from django import forms
+from .models import Articulo
+from ckeditor.widgets import CKEditorWidget
+
+
 
 # Usamos ModelForm para vincular directamente el formulario al modelo.
 # Esto simplifica la validación y el guardado.
@@ -44,3 +49,11 @@ class ArticuloForm(forms.Form):
     titulo = forms.CharField(max_length=100)
     contenido = forms.CharField(widget=forms.Textarea)
     fecha_publicacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    
+#################################
+class FormularioArticulo(forms.ModelForm):
+    contenido = forms.CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = Articulo
+        fields = ['titulo', 'contenido', 'imagen', 'fecha_publicacion']

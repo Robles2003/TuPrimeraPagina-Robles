@@ -19,7 +19,7 @@
         <h3>Crear Publicacion</h3>
         <p>Crear un articulo para poder conpatirlo con los lectores</p>
         <div style="display: flex; gap: 10px;">
-            <a href="{% url 'crear_publicacion' %}" style="background-color: green; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Crear</a>
+            <a href="{% url 'crear-publicacion' %}" style="background-color: green; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Crear</a>
         </div>
     </div>
 
@@ -28,7 +28,7 @@
         <h3>Ver tus articulos</h3>
         <p>Lista los articulos que escribiste </p>
         <div style="display: flex; gap: 10px;">
-            <a href="{% url 'articulos' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Listar</a>
+            <a href="{% url 'articulo-list' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Listar</a>
         </div>
     </div>
 
@@ -43,7 +43,7 @@
             <h3>Leer Articulos</h3>
             <p>Lee los articulos creados por todos los usuarios Autores</p>
             <div style="display: flex; gap: 10px;">
-                <a href="{% url 'articulos' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Leer</a>
+                <a href="{% url 'articulo-list' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Leer</a>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
             <h3>Buscar</h3>
             <p>Ingresa el nombre o palabara clave de algun articulo que te interese</p>
             <div style="display: flex; gap: 10px;">
-                <a href="{% url 'buscar_articulos' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Buscar</a>
+                <a href="{% url 'articulo-list' %}" style="background-color: blue; color: white; text-decoration: none; padding: 8px 16px; border-radius: 4px;">Buscar</a>
             </div>
         </div>
     </div>

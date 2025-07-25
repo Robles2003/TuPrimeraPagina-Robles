@@ -31,6 +31,28 @@
                 </ul>
             </div>
         </div>
+        <ul>
+            <li><a href="{% url 'main' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">About</a></li>
+            <li><a href="{% url 'articulo-list' %}">Pages</a></li>
+
+            {% if request.session.logeado %}
+            <!-- Usuario logueado -->
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+
+            {% if request.session.tipo == 'autor' %}
+                <li><a href="{% url 'crear-publicacion' %}">Crear Página</a></li>
+            {% endif %}
+
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+
+            {% else %}
+            <!-- No logueado -->
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'crear_autor' %}">Registro Autor</a></li>
+            <li><a href="{% url 'crear_lector' %}">Registro Lector</a></li>
+            {% endif %}
+        </ul>
     </nav>
 
     <main class="container">

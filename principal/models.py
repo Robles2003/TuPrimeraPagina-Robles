@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Usuario(models.Model): 
     id = models.AutoField(primary_key=True)
@@ -25,8 +26,9 @@ class Autor(Usuario):
     
 class Articulo(models.Model):
     titulo = models.CharField(max_length=100)
-    contenido= models.TextField()
+    contenido = models.TextField()
     fecha_publicacion = models.DateField()
+    imagen = models.ImageField(upload_to='imagenes_articulos/', null=True, blank=True)  # ⬅️ Agregado
     autor = models.ForeignKey(Autor, on_delete=models.CASCADE)
     
     def __str__(self):
