@@ -1,9 +1,5 @@
-# forms.py
-
 from django import forms
 from .models import Autor, Lector, Articulo, Comentario
-from django import forms
-from .models import Articulo
 from ckeditor.widgets import CKEditorWidget
 
 ICONOS_CHOICES = [
@@ -17,31 +13,37 @@ class IconoRadioSelect(forms.RadioSelect):
 
 class PerfilForm(forms.Form):
     nombre = forms.CharField(label='Nuevo nombre', max_length=100, required=False)
+    apellido = forms.CharField(label='Nuevo apellido', max_length=100, required=False)
+    email = forms.EmailField(label='Nuevo email', required=False)
+    fecha_nacimiento = forms.DateField(label='Nueva fecha de nacimiento', widget=forms.DateInput(attrs={'type': 'date'}), required=False)
     password = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput, required=False)
     icono = forms.ChoiceField(choices=ICONOS_CHOICES, required=False)
 
 class AutorModelForm(forms.ModelForm):
     password = forms.CharField(max_length=12, widget=forms.PasswordInput)
-    
+
     class Meta:
         model = Autor
-        fields = ['nombre', 'edad', 'password', 'Nacionalidad', 'icono']  
+        fields = ['nombre', 'apellido', 'email', 'fecha_nacimiento', 'edad', 'password', 'Nacionalidad', 'icono']
         widgets = {
-            'icono': IconoRadioSelect
+            'icono': IconoRadioSelect,
+            'fecha_nacimiento': forms.DateInput(attrs={'type': 'date'})
         }
-        
+
 class LectorModelForm(forms.ModelForm):
     password = forms.CharField(max_length=12, widget=forms.PasswordInput)
-    
+
     class Meta:
         model = Lector
-        fields = ['nombre', 'edad', 'password', 'direccion', 'icono'] 
+        fields = ['nombre', 'apellido', 'email', 'fecha_nacimiento', 'edad', 'password', 'direccion', 'icono']
         widgets = {
-            'icono': IconoRadioSelect
+            'icono': IconoRadioSelect,
+            'fecha_nacimiento': forms.DateInput(attrs={'type': 'date'})
         }
+
 class ArticuloModelForm(forms.ModelForm):
     fecha_publicacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    
+
     class Meta:
         model = Articulo
         fields = ['titulo', 'contenido', 'fecha_publicacion']
@@ -56,12 +58,11 @@ class LoginForm(forms.Form):
 
 class BuscarForm(forms.Form):
     busqueda = forms.CharField(max_length=100, label='Buscar Artículo', required=False)
-    
+
 class ArticuloForm(forms.Form):
     titulo = forms.CharField(max_length=100)
     contenido = forms.CharField(widget=forms.Textarea)
     fecha_publicacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-
 
 class FormularioArticulo(forms.ModelForm):
     contenido = forms.CharField(widget=CKEditorWidget())
@@ -69,7 +70,7 @@ class FormularioArticulo(forms.ModelForm):
     class Meta:
         model = Articulo
         fields = ['titulo', 'contenido', 'imagen', 'fecha_publicacion']
-        
+
 class ComentarioForm(forms.ModelForm):
     class Meta:
         model = Comentario
@@ -77,4 +78,3 @@ class ComentarioForm(forms.ModelForm):
         widgets = {
             'contenido': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escribe un comentario...'}),
         }
-

@@ -7,6 +7,9 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=100)
     edad = models.IntegerField()
     password = models.CharField(max_length=12)
+    apellido = models.CharField(max_length=100, blank=True, null=True)  
+    email = models.EmailField(unique=True, blank=True, null=True)       
+    fecha_nacimiento = models.DateField(blank=True, null=True) 
     ICONO_CHOICES = [
         ('assets/icono1.png', 'Icono 1'),
         ('assets/icono2.png', 'Icono 2'),
