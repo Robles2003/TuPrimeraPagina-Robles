@@ -24,6 +24,7 @@ class MainView(TemplateView):
         context['nombre'] = self.request.session.get('nombre')
         context['tipo'] = self.request.session.get('tipo')
         
+        
         if context['tipo'] == 'autor':
             context['Autor'] = True 
         elif context['tipo'] == 'lector':
@@ -48,6 +49,9 @@ class LoginView(FormView):
             self.request.session['logeado'] = True
             self.request.session['tipo'] = tipo
             self.request.session['nombre'] = user.nombre
+            self.request.session['icono'] = user.icono 
+            
+            
             if tipo == 'autor':
                 self.request.session['idAutor'] = user.id
             else:
@@ -185,13 +189,11 @@ class ArticuloDeleteView(DeleteView):
     
 def profile_view(request):
     usuario_tipo = request.session.get('tipo')  # 'autor' o 'lector'
-    
+
     if usuario_tipo == 'autor':
         usuario_id = request.session.get('idAutor')
     else:
         usuario_id = request.session.get('idLector')
-     
-    
 
     if not usuario_id or not usuario_tipo:
         return redirect('main')
@@ -208,10 +210,12 @@ def profile_view(request):
 
             if nombre:
                 usuario.nombre = nombre
+                request.session['nombre'] = nombre  # Actualiza la sesión
             if password:
                 usuario.password = password
             if icono:
                 usuario.icono = icono
+                request.session['icono'] = icono  # Actualiza la sesión
 
             usuario.save()
             return redirect('main')
@@ -221,4 +225,7 @@ def profile_view(request):
             'icono': usuario.icono,
         })
 
-    return render(request, 'vista/profile.html', {'form': form})
+    return render(request, 'vista/profile.html', {
+        'form': form,
+        'icono_actual': usuario.icono
+    })

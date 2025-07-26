@@ -4,6 +4,7 @@
 {% block content %}
 <div class="container">
     <h2>Editar Perfil</h2>
+
     <form method="POST">
         {% csrf_token %}
         <div class="mb-3">
@@ -17,18 +18,28 @@
         </div>
 
         <div class="mb-3">
-            <label>Imagen de perfil:</label>
-            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                {% for choice in form.icono.field.choices %}
-                    <label style="text-align:center; cursor:pointer;">
-                        <input type="radio" name="{{ form.icono.name }}" value="{{ choice.0 }}"
-                               {% if choice.0 == form.icono.value %}checked{% endif %}>
-                        <br>
-                        <img src="{% static choice.0 %}" alt="{{ choice.1 }}" width="60" height="60" style="border-radius: 50%;">
-                    </label>
-                {% endfor %}
-            </div>
+            <label>Imagen de perfil actual:</label><br>
+            {% if icono_actual %}
+                <img src="{% static icono_actual %}" alt="Icono actual" width="80">
+            {% else %}
+                <p>No hay imagen</p>
+            {% endif %}
         </div>
+
+        <div class="mb-3">
+    <label>Elegir nuevo icono:</label>
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        {% for value, label in form.fields.icono.choices %}
+            <label style="text-align:center">
+                <input type="radio" name="icono" value="{{ value }}"
+                       {% if value == form.initial.icono %}checked{% endif %}>
+                <br>
+                <img src="{% static value %}" alt="{{ label }}" width="60" height="60">
+            </label>
+        {% endfor %}
+    </div>
+</div>
+
 
         <button type="submit" class="btn btn-primary">Guardar cambios</button>
     </form>

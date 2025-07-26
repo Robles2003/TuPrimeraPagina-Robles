@@ -6,7 +6,11 @@ from django import forms
 from .models import Articulo
 from ckeditor.widgets import CKEditorWidget
 
-
+ICONOS_CHOICES = [
+    ("assets/icono1.png", "Icono 1"),
+    ("assets/icono2.png", "Icono 2"),
+    ("assets/icono3.png", "Icono 3"),
+]
 
 # Usamos ModelForm para vincular directamente el formulario al modelo.
 # Esto simplifica la validación y el guardado.
@@ -16,11 +20,7 @@ class IconoRadioSelect(forms.RadioSelect):
 class PerfilForm(forms.Form):
     nombre = forms.CharField(label='Nuevo nombre', max_length=100, required=False)
     password = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput, required=False)
-    icono = forms.CharField(label='Nuevo ícono', required=False, widget=forms.RadioSelect(choices=[
-        ('assets/icono1.png', 'Icono 1'),
-        ('assets/icono2.png', 'Icono 2'),
-        ('assets/icono3.png', 'Icono 3'),
-    ]))
+    icono = forms.ChoiceField(choices=ICONOS_CHOICES, required=False)
 
 class AutorModelForm(forms.ModelForm):
     password = forms.CharField(max_length=12, widget=forms.PasswordInput)

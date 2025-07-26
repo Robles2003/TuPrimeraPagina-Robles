@@ -1,0 +1,138 @@
+/* ==========================================================================
+   Componentes Adicionales (Estilo Bootstrap)
+   ========================================================================== */
+
+/* Cards (Tarjetas) */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid var(--color-borde);
+  border-radius: 0.375rem; /* Equivalente a .rounded en Bootstrap */
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px var(--color-sombra);
+}
+
+.card-header {
+  padding: 1rem 1.25rem;
+  margin-bottom: 0;
+  background-color: var(--color-acento);
+  border-bottom: 1px solid var(--color-borde);
+  font-weight: bold;
+  color: var(--color-primario);
+}
+
+.card-body {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+  font-family: var(--fuente-titulos);
+  font-size: 1.5rem; /* Similar a h3 */
+  color: var(--color-primario);
+}
+
+.card-text:last-child {
+  margin-bottom: 0;
+}
+
+.card-footer {
+  padding: 1rem 1.25rem;
+  background-color: var(--color-acento);
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+/* Alerts (Alertas) */
+.alert {
+  position: relative;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+}
+
+.alert-primary {
+  color: #1c2b4d;
+  background-color: var(--color-acento);
+  border-color: var(--color-secundario);
+}
+
+/* Puedes añadir más colores si lo necesitas, como 'success', 'danger', etc. */
+/* Ejemplo de alerta de peligro (rojo) */
+.alert-danger {
+  color: #58151c;
+  background-color: #f8d7da;
+  border-color: #f1aeb5;
+}
+
+/* Badges (Insignias) */
+.badge {
+  display: inline-block;
+  padding: 0.35em 0.65em;
+  font-size: .75em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.375rem;
+}
+
+/* Insignia con el color primario */
+.bg-primary {
+  color: #fff;
+  background-color: var(--color-primario);
+}
+
+/* Insignia con el color secundario */
+.bg-secondary {
+  color: #fff;
+  background-color: var(--color-secundario);
+}
+
+/* Pagination (Paginación) */
+.pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+}
+
+.page-item .page-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+  color: var(--color-enlace);
+  background-color: #fff;
+  border: 1px solid var(--color-borde);
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.page-item .page-link:hover {
+  z-index: 2;
+  color: var(--color-enlace-hover);
+  background-color: var(--color-acento);
+  border-color: var(--color-borde);
+}
+
+.page-item.active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: var(--color-primario);
+  border-color: var(--color-primario);
+}
+
+.page-item.disabled .page-link {
+  color: var(--color-texto-secundario);
+  pointer-events: none;
+  background-color: #fff;
+  border-color: var(--color-borde);
+}
