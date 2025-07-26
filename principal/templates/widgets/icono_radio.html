@@ -1,6 +1,6 @@
 {% load static %}
 
-<label style="display: inline-block; text-align: center;">
+<label style="display: inline-block; text-align: center;" display="flex">
   <input type="radio" name="{{ widget.name }}" value="{{ widget.value|stringformat:'s' }}"
          {% include "django/forms/widgets/attrs.html" %}
          {% if widget.value == widget.attrs.checked %} checked {% endif %}>

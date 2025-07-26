@@ -12,8 +12,6 @@ ICONOS_CHOICES = [
     ("assets/icono3.png", "Icono 3"),
 ]
 
-# Usamos ModelForm para vincular directamente el formulario al modelo.
-# Esto simplifica la validación y el guardado.
 class IconoRadioSelect(forms.RadioSelect):
     option_template_name = 'widgets/icono_radio.html' 
 
@@ -46,10 +44,8 @@ class ArticuloModelForm(forms.ModelForm):
     
     class Meta:
         model = Articulo
-        # El autor se asignará automáticamente en la vista, no es necesario en el form.
         fields = ['titulo', 'contenido', 'fecha_publicacion']
 
-# Estos formularios no están ligados a un modelo, así que se quedan como forms.Form
 class LoginForm(forms.Form):
     nombre = forms.CharField(max_length=100, label='Nombre de usuario')
     password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
@@ -65,8 +61,8 @@ class ArticuloForm(forms.Form):
     titulo = forms.CharField(max_length=100)
     contenido = forms.CharField(widget=forms.Textarea)
     fecha_publicacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    
-#################################
+
+
 class FormularioArticulo(forms.ModelForm):
     contenido = forms.CharField(widget=CKEditorWidget())
 

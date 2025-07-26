@@ -10,7 +10,7 @@ from .models import Articulo, Autor, Lector, Usuario
 from .forms import ArticuloModelForm, LoginForm, BuscarForm, FormularioArticulo, AutorModelForm, LectorModelForm, PerfilForm, ComentarioForm
 
 
-# Vista principal protegida por sesión
+
 class MainView(TemplateView):
     template_name = 'vista/main.html'
 
@@ -36,7 +36,7 @@ class MainView(TemplateView):
 class LoginView(FormView):
     template_name = 'vista/login.html'
     form_class = LoginForm
-    success_url = reverse_lazy('main') # reverse_lazy se usa en CBV para esperar a que las URLs estén listas.
+    success_url = reverse_lazy('main') 
 
     def form_valid(self, form):
         nombre = form.cleaned_data['nombre']
@@ -62,20 +62,18 @@ class LoginView(FormView):
             return self.form_invalid(form)
 
 
-# Vista de Logout (usamos una View base porque es una acción simple)
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
         request.session['logeado'] = False
-        request.session.flush() # Limpia toda la sesión para mayor seguridad
+        request.session.flush() 
         return redirect('main')
 
 
-# Vista About
+
 class AboutView(TemplateView):
     template_name = 'vista/about.html'
 
 
-# Vistas de Creación
 
 class CrearAutorView(CreateView):
     model = Autor
@@ -103,7 +101,7 @@ class CrearLectorView(CreateView):
             return self.form_invalid(form)
         return super().form_valid(form)
 
-# Crear artículo (solo para autores logueados)
+
 class CrearPublicacionView(CreateView):
     model = Articulo
     form_class = ArticuloModelForm
@@ -127,7 +125,6 @@ class CrearPublicacionView(CreateView):
             form.instance.autor = Autor.objects.get(id=autor_id)
         return super().form_valid(form)
 
-# Listado de artículos con búsqueda opcional
 class ArticuloListView(ListView):
     model = Articulo
     template_name = 'vista/articulo_list.html'
@@ -145,16 +142,6 @@ class ArticuloListView(ListView):
             queryset = queryset.filter(titulo__icontains=query)
         return queryset
 
-# Detalle de artículo
-# class ArticuloDetailView(DetailView):
-#     model = Articulo
-#     template_name = 'vista/articulo_detail.html'
-#     context_object_name = 'articulo'
-
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.session.get('logeado'):
-#             return redirect('login')
-#         return super().dispatch(request, *args, **kwargs)
 
 class ArticuloDetailView(DetailView):
     model = Articulo
@@ -187,7 +174,7 @@ class ArticuloDetailView(DetailView):
 
 
 
-# Actualizar artículo (requiere ser autor y estar logueado)
+
 class ArticuloUpdateView(UpdateView):
     model = Articulo
     form_class = ArticuloModelForm
@@ -199,14 +186,6 @@ class ArticuloUpdateView(UpdateView):
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
 
-    # def get_form_kwargs(self):
-    #     kwargs = super().get_form_kwargs()
-    #     autor_id = self.request.session.get('idAutor')
-    #     if autor_id:
-    #         kwargs['autor'] = Autor.objects.get(id=autor_id)
-    #     return kwargs
-
-# Eliminar artículo (requiere ser autor y estar logueado)
 class ArticuloDeleteView(DeleteView):
     model = Articulo
     template_name = 'vista/articulo_confirm_delete.html'
