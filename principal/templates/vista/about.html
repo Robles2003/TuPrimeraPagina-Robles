@@ -1,5 +1,23 @@
 {% extends "plantilla.html" %}
+{% load static %}
 
 {% block title %}Acerca de Nosotros{% endblock %}
 
 {% block content %}
+<div class="container" style="display: flex; align-items: center; gap: 20px;">
+    <div class="about-image" style="flex: 1;">
+        <img src="{% static 'assets/robles.jpg' %}" alt="Foto de Matías Robles" style="width: 100%; max-width: 250px; border-radius: 8px;">
+    </div>
+    <div class="about-text" style="flex: 2;">
+        <h1>Acerca de Matías Robles</h1>
+        <p>Hola, mi nombre es Matías Robles, tengo 22 años y soy estudiante de Ingeniería en Sistemas en la Facultad de Ingeniería.</p>
+        
+        <h2>Mi Misión</h2>
+        <p>Estoy enfocado en adquirir conocimientos prácticos y desarrollar habilidades para convertirme en un desarrollador web profesional.</p>
+        
+        <h2>Contacto</h2>
+        <p>Si quieres saber más o colaborar conmigo, no dudes en contactarme.</p>
+    </div>
+</div>
+
+{% endblock %}
