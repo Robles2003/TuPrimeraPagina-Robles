@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.utils.timezone import now
 
 from .models import Articulo, Autor, Lector, Usuario
-from .forms import ArticuloModelForm, LoginForm, BuscarForm, FormularioArticulo, AutorModelForm, LectorModelForm, PerfilForm
+from .forms import ArticuloModelForm, LoginForm, BuscarForm, FormularioArticulo, AutorModelForm, LectorModelForm, PerfilForm, ComentarioForm
 
 
 # Vista principal protegida por sesión
@@ -146,15 +146,46 @@ class ArticuloListView(ListView):
         return queryset
 
 # Detalle de artículo
+# class ArticuloDetailView(DetailView):
+#     model = Articulo
+#     template_name = 'vista/articulo_detail.html'
+#     context_object_name = 'articulo'
+
+#     def dispatch(self, request, *args, **kwargs):
+#         if not request.session.get('logeado'):
+#             return redirect('login')
+#         return super().dispatch(request, *args, **kwargs)
+
 class ArticuloDetailView(DetailView):
     model = Articulo
     template_name = 'vista/articulo_detail.html'
     context_object_name = 'articulo'
 
-    def dispatch(self, request, *args, **kwargs):
-        if not request.session.get('logeado'):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.session.get('tipo') == 'lector':
+            context['comentario_form'] = ComentarioForm()
+        context['comentarios'] = self.object.comentarios.order_by('-fecha')
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.session.get('tipo') != 'lector':
             return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
+
+        self.object = self.get_object()
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.articulo = self.object
+            comentario.lector = Lector.objects.get(id=request.session.get('idLector'))
+            comentario.save()
+            return redirect('articulo-detail', pk=self.object.pk)
+
+        context = self.get_context_data(object=self.object)
+        context['comentario_form'] = form
+        return self.render_to_response(context)
+
+
 
 # Actualizar artículo (requiere ser autor y estar logueado)
 class ArticuloUpdateView(UpdateView):

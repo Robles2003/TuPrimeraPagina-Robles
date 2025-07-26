@@ -1,7 +1,7 @@
 # forms.py
 
 from django import forms
-from .models import Autor, Lector, Articulo
+from .models import Autor, Lector, Articulo, Comentario
 from django import forms
 from .models import Articulo
 from ckeditor.widgets import CKEditorWidget
@@ -73,3 +73,12 @@ class FormularioArticulo(forms.ModelForm):
     class Meta:
         model = Articulo
         fields = ['titulo', 'contenido', 'imagen', 'fecha_publicacion']
+        
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['contenido']
+        widgets = {
+            'contenido': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Escribe un comentario...'}),
+        }
+

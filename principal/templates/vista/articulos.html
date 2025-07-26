@@ -36,5 +36,25 @@
     </lu>
 
 {%endif%}
+<br>
+<h4>Comentarios:</h4>
+<div>
+    {% for comentario in comentarios %}
+        <div class="border p-2 mb-2">
+            <strong>{{ comentario.lector.nombre }}</strong> <small>({{ comentario.fecha|date:"d M Y H:i" }})</small>
+            <p>{{ comentario.contenido }}</p>
+        </div>
+    {% empty %}
+        <p>No hay comentarios.</p>
+    {% endfor %}
+</div>
+
+{% if request.session.tipo == 'lector' %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ comentario_form.as_p }}
+        <button type="submit" class="btn btn-primary">Comentar</button>
+    </form>
+{% endif %}
 
 {% endblock  %}

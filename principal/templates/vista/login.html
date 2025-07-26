@@ -12,13 +12,6 @@
         <button type="submit" class="btn btn-primary w-100">Ingresar</button>
     </form>
 
-    <div class="text-center mt-3">
-        <a href="{% url 'crear_autor' %}">Registrar Autor</a>
-    
-    <div class="text-center mt-3">
-        <a href="{% url 'crear_lector' %}">Registrar Lector</a>
-
-
     {% if error %}
         <div class="alert alert-danger mt-3 text-center">
             {{ error }}

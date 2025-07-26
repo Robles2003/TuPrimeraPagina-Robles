@@ -1,18 +1,28 @@
 {% extends "plantilla.html" %}
-
-{% block title %}Detalle del Artículo{% endblock %}
-
 {% block content %}
-<h2>{{ articulo.titulo }}</h2>
-<p class="text-muted">Publicado el {{ articulo.fecha_publicacion }} por {{ articulo.autor.nombre }}</p>
-<div class="mt-3">
-    {{ articulo.contenido|safe }}
-</div>
+  <h2>{{ articulo.titulo }}</h2>
+  <h4>Autor: {{ articulo.autor.nombre }}</h4>
+  <p>{{ articulo.contenido }}</p>
+  <p><strong>Publicado el:</strong> {{ articulo.fecha_publicacion }}</p>
 
-{% if request.session.tipo == 'autor' %}
-<hr>
-<a class="btn btn-primary" href="{% url 'articulo-edit' articulo.pk %}">Editar</a>
-<a class="btn btn-danger" href="{% url 'articulo-delete' articulo.pk %}">Eliminar</a>
-{% endif %}
-<a class="btn btn-secondary mt-3" href="{% url 'articulo-list' %}">Volver a la lista</a>
+  <hr>
+  <h4>Comentarios:</h4>
+  {% for comentario in comentarios %}
+    <div class="border p-2 mb-2">
+        <strong>{{ comentario.lector.nombre }}</strong> 
+        <small>({{ comentario.fecha|date:"d M Y H:i" }})</small>
+        <p>{{ comentario.contenido }}</p>
+    </div>
+  {% empty %}
+    <p>No hay comentarios aún.</p>
+  {% endfor %}
+
+  {% if request.session.tipo == 'lector' %}
+    <h5>Agregar comentario</h5>
+    <form method="POST">
+        {% csrf_token %}
+        {{ comentario_form.as_p }}
+        <button type="submit" class="btn btn-primary">Comentar</button>
+    </form>
+  {% endif %}
 {% endblock %}

@@ -39,3 +39,14 @@ class Articulo(models.Model):
     
     def __str__(self):
         return f"Titulo: {self.titulo}, Contenido: {self.contenido}, Fecha de Publicacion: {self.fecha_publicacion}, Autor: {self.autor.nombre} id: {self.autor.id}"
+
+
+class Comentario(models.Model):
+    lector = models.ForeignKey('Lector', on_delete=models.CASCADE)
+    articulo = models.ForeignKey('Articulo', on_delete=models.CASCADE, related_name='comentarios')
+    contenido = models.TextField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.lector.nombre} - {self.articulo.titulo}"
+
