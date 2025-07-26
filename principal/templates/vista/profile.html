@@ -1,0 +1,36 @@
+{% extends "plantilla.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Editar Perfil</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.nombre.label_tag }}
+            {{ form.nombre }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+
+        <div class="mb-3">
+            <label>Imagen de perfil:</label>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                {% for choice in form.icono.field.choices %}
+                    <label style="text-align:center; cursor:pointer;">
+                        <input type="radio" name="{{ form.icono.name }}" value="{{ choice.0 }}"
+                               {% if choice.0 == form.icono.value %}checked{% endif %}>
+                        <br>
+                        <img src="{% static choice.0 %}" alt="icono" width="60" height="60" style="border-radius: 50%;">
+                    </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </form>
+</div>
+{% endblock %}

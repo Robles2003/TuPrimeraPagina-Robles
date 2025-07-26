@@ -1,22 +1,55 @@
 {% extends "plantilla.html" %}
+{% load static %}
 
-{% block title %}Autor{% endblock title %}
+{% block title %}Crear Autor{% endblock title %}
 
-{% block content %} 
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Crear Autor</h2>
 
-<h2>Crear Autor</h2>
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Guardar</button>
+        
+        <div class="mb-3">
+            {{ form.nombre.label_tag }}
+            {{ form.nombre }}
+            {% for error in form.nombre.errors %}
+                <div class="text-danger">{{ error }}</div>
+            {% endfor %}
+        </div>
 
-        {% if form.nombre.errors %}
-            <ul class="errorlist">
-                {% for error in form.nombre.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
+        <div class="mb-3">
+            {{ form.edad.label_tag }}
+            {{ form.edad }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+        </div>
+
+        {% if form.direccion %}
+        <div class="mb-3">
+            {{ form.direccion.label_tag }}
+            {{ form.direccion }}
+        </div>
         {% endif %}
-    </form>
 
+        {% if form.Nacionalidad %}
+        <div class="mb-3">
+            {{ form.Nacionalidad.label_tag }}
+            {{ form.Nacionalidad }}
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label>Seleccioná un ícono:</label><br>
+            <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                {{ form.icono }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+</div>
 {% endblock content %}

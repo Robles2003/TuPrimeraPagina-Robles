@@ -1,0 +1,11 @@
+{% load static %}
+
+{% with option_value=widget.value|stringformat:'s' %}
+<label style="display: inline-block; text-align: center;">
+  <input type="radio" name="{{ widget.name }}" value="{{ widget.value|stringformat:'s' }}"
+         {% include "django/forms/widgets/attrs.html" %}
+         {% if widget.value == option_value %} checked {% endif %}>
+  <br>
+  <img src="{% static option_value %}" alt="icono" style="width: 60px; height: 60px;">
+</label>
+{% endwith %}

@@ -1,110 +1,13 @@
 # views.py
 
-# from django.shortcuts import render, redirect
-# from django.urls import reverse_lazy
-# from django.views.generic import TemplateView, FormView, CreateView, ListView, View
-# from django.contrib.auth.mixins import AccessMixin, LoginRequiredMixin
-# from django.contrib.auth.decorators import login_required
-# from django.contrib import messages
-
-# from .forms import AutorModelForm, LectorModelForm, ArticuloModelForm, LoginForm, BuscarForm
-# from .models import Autor, Lector, Articulo
-
-
-# from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
-# from django.urls import reverse_lazy
-# from django.contrib.auth.mixins import LoginRequiredMixin
-# from .models import Articulo
-# from .forms import FormularioArticulo
-
-
-# # Mixin para verificar si el usuario es un autor logueado.
-# # Un Mixin es una clase que nos permite reutilizar código en otras vistas.
-# class AutorRequiredMixin(AccessMixin):
-#     """Verifica que el usuario actual esté autenticado como autor."""
-#     def dispatch(self, request, *args, **kwargs):
-#         if not request.session.get('logeado') or request.session.get('tipo') != 'autor':
-#             messages.error(request, 'Debes estar logueado como autor para acceder a esta página.')
-#             return self.handle_no_permission()
-#         return super().dispatch(request, *args, **kwargs)
-
-# # Vista Principal
-# class MainView(TemplateView):
-#     template_name = 'vista/main.html'
-
-#     def get(self, request, *args, **kwargs):
-#         # Si no está logueado, lo redirigimos al login
-#         if not request.session.get('logeado', False):
-#             return redirect('login')
-#         return super().get(request, *args, **kwargs)
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['nombre'] = self.request.session.get('nombre')
-#         context['tipo'] = self.request.session.get('tipo')
-#         if context['tipo'] == 'autor':
-#             context['Autor'] = True
-#         elif context['tipo'] == 'lector':
-#             context['Lector'] = True
-#         return context
-
-# # Vista de Login
-
-
-# class CrearPublicacionView(AutorRequiredMixin , CreateView):
-#     model = Articulo
-#     form_class = ArticuloModelForm
-#     template_name = 'vista/crear_Publicacion.html'
-#     success_url = reverse_lazy('inicio')
-
-#     def form_valid(self, form):
-#         # Asignamos el autor logueado al artículo antes de guardarlo.
-#         form.instance.autor = Autor.objects.get(id=self.request.session.get('idAutor'))
-#         return super().form_valid(form)
-
-# # Vista para listar y buscar artículos (unificamos las dos vistas en una)
-# class ArticulosListView(ListView):
-#     model = Articulo
-#     template_name = 'vista/articulos.html'
-#     context_object_name = 'articulos' # Nombre de la variable en el template
-
-#     def get_queryset(self):
-#         queryset = super().get_queryset()
-        
-#         # Filtrar si el usuario es un autor
-#         if self.request.session.get('tipo') == 'autor':
-#             queryset = queryset.filter(autor__id=self.request.session.get('idAutor'))
-
-#         # Filtrar por búsqueda
-#         busqueda = self.request.GET.get('busqueda')
-#         if busqueda:
-#             queryset = queryset.filter(titulo__icontains=busqueda)
-            
-#         return queryset
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         # Añadimos el formulario de búsqueda al contexto
-#         context['form_buscar'] = BuscarForm(self.request.GET or None)
-#         # Añadimos la info del usuario al contexto
-#         context['nombre'] = self.request.session.get('nombre')
-#         context['tipo'] = self.request.session.get('tipo')
-#         if context['tipo'] == 'autor':
-#             context['Autor'] = True
-#         elif context['tipo'] == 'lector':
-#             context['Lector'] = True
-#         return context
-    
-#########################################################################
-
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, FormView, CreateView, ListView, DetailView, UpdateView, DeleteView, View
 from django.contrib import messages
 from django.utils.timezone import now
 
 from .models import Articulo, Autor, Lector, Usuario
-from .forms import ArticuloModelForm, LoginForm, BuscarForm, FormularioArticulo, AutorModelForm, LectorModelForm
+from .forms import ArticuloModelForm, LoginForm, BuscarForm, FormularioArticulo, AutorModelForm, LectorModelForm, PerfilForm
 
 
 # Vista principal protegida por sesión
@@ -278,3 +181,44 @@ class ArticuloDeleteView(DeleteView):
         if not request.session.get('logeado') or request.session.get('tipo') != 'autor':
             return redirect('login')
         return super().dispatch(request, *args, **kwargs)
+    
+    
+def profile_view(request):
+    usuario_tipo = request.session.get('tipo')  # 'autor' o 'lector'
+    
+    if usuario_tipo == 'autor':
+        usuario_id = request.session.get('idAutor')
+    else:
+        usuario_id = request.session.get('idLector')
+     
+    
+
+    if not usuario_id or not usuario_tipo:
+        return redirect('main')
+
+    Modelo = Autor if usuario_tipo == 'autor' else Lector
+    usuario = Modelo.objects.get(id=usuario_id)
+
+    if request.method == 'POST':
+        form = PerfilForm(request.POST)
+        if form.is_valid():
+            nombre = form.cleaned_data['nombre']
+            password = form.cleaned_data['password']
+            icono = form.cleaned_data['icono']
+
+            if nombre:
+                usuario.nombre = nombre
+            if password:
+                usuario.password = password
+            if icono:
+                usuario.icono = icono
+
+            usuario.save()
+            return redirect('main')
+    else:
+        form = PerfilForm(initial={
+            'nombre': usuario.nombre,
+            'icono': usuario.icono,
+        })
+
+    return render(request, 'vista/profile.html', {'form': form})

@@ -10,21 +10,37 @@ from ckeditor.widgets import CKEditorWidget
 
 # Usamos ModelForm para vincular directamente el formulario al modelo.
 # Esto simplifica la validación y el guardado.
+class IconoRadioSelect(forms.RadioSelect):
+    option_template_name = 'widgets/icono_radio.html' 
+
+class PerfilForm(forms.Form):
+    nombre = forms.CharField(label='Nuevo nombre', max_length=100, required=False)
+    password = forms.CharField(label='Nueva contraseña', widget=forms.PasswordInput, required=False)
+    icono = forms.CharField(label='Nuevo ícono', required=False, widget=forms.RadioSelect(choices=[
+        ('assets/icono1.png', 'Icono 1'),
+        ('assets/icono2.png', 'Icono 2'),
+        ('assets/icono3.png', 'Icono 3'),
+    ]))
 
 class AutorModelForm(forms.ModelForm):
     password = forms.CharField(max_length=12, widget=forms.PasswordInput)
     
     class Meta:
         model = Autor
-        fields = ['nombre', 'edad', 'password', 'Nacionalidad']
-
+        fields = ['nombre', 'edad', 'password', 'Nacionalidad', 'icono']  
+        widgets = {
+            'icono': IconoRadioSelect
+        }
+        
 class LectorModelForm(forms.ModelForm):
     password = forms.CharField(max_length=12, widget=forms.PasswordInput)
     
     class Meta:
         model = Lector
-        fields = ['nombre', 'edad', 'password', 'direccion']
-
+        fields = ['nombre', 'edad', 'password', 'direccion', 'icono'] 
+        widgets = {
+            'icono': IconoRadioSelect
+        }
 class ArticuloModelForm(forms.ModelForm):
     fecha_publicacion = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     

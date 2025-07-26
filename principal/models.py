@@ -7,6 +7,12 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=100)
     edad = models.IntegerField()
     password = models.CharField(max_length=12)
+    ICONO_CHOICES = [
+        ('assets/icono1.png', 'Icono 1'),
+        ('assets/icono2.png', 'Icono 2'),
+        ('assets/icono3.png', 'Icono 3'),
+    ]
+    icono = models.CharField(max_length=100, choices=ICONO_CHOICES, default='assets/icono1.png')
     
     class Meta:
         abstract = True

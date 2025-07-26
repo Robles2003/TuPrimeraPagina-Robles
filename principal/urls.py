@@ -4,7 +4,7 @@ from .views import (
     ArticuloListView, ArticuloDetailView,
     ArticuloUpdateView, ArticuloDeleteView,
     LoginView, LogoutView,
-    CrearAutorView, CrearLectorView
+    CrearAutorView, CrearLectorView, profile_view
 )
 
 urlpatterns = [
@@ -28,5 +28,5 @@ urlpatterns = [
     path('articulo/<int:pk>/eliminar/', ArticuloDeleteView.as_view(), name='articulo-delete'),
     
     
-    path('profile/',),
+    path('profile/', profile_view, name='profile'),
 ]
